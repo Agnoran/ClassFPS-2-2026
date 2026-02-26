@@ -41,7 +41,7 @@ public class playerController : MonoBehaviour, IDamage, IPickup
     void Start()
     {
         HPOrig = HP;
-        updatePlayerUI();
+        spawnPlayer();
     }
 
     // Update is called once per frame
@@ -51,6 +51,13 @@ public class playerController : MonoBehaviour, IDamage, IPickup
         sprint();
     }
 
+    public void spawnPlayer()
+    {
+        controller.transform.position = gamemanager.instance.playerSpawnPos.transform.position;
+        Physics.SyncTransforms();
+        HP = HPOrig;
+        updatePlayerUI();
+    }
     void movement()
     {
         shootTimer += Time.deltaTime;
@@ -113,7 +120,11 @@ public class playerController : MonoBehaviour, IDamage, IPickup
             IDamage dmg = hit.collider.GetComponent<IDamage>();
             if (dmg != null)
             {
-                dmg.takeDamage(shootDamage);
+                if (hit.collider is SphereCollider)
+                {
+                    dmg.takeDamage(shootDamage * 100);
+                }
+                else dmg.takeDamage(shootDamage);
             }
         }
     }

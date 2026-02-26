@@ -20,4 +20,9 @@ public class buttonfunctions : MonoBehaviour
         Application.Quit();
     #endif
     }
+
+    public void respawnPlayer()
+    {
+        gamemanager.instance.playerScript.spawnPlayer();
+    }
 }
